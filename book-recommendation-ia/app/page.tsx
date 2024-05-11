@@ -2,20 +2,52 @@
 import Image from "next/image";
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+// Access your API key as an environment variable
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+
+// ...
 export default function Home() {
   const { register, handleSubmit } = useForm();
   const [recommendedBooks, setRecommendedBooks] = useState([]);
 
-  const onSubmit = (data) => {
-    // Lógica para buscar recomendações de livros com base nos livros favoritos do usuário.
-    // Substitua este exemplo com sua lógica real.
-    const recommendations = getRecommendations(data.favoriteBooks);
+  async function runGenAi(favoriteBooks: string) {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  
+    const prompt = `Aja como um livreiro. Sugira livros do grupo Companhia das Letras que sejam similares aos livros que o leitor gosta.
+
+    Leitor: Rápido e Devagar
+    Livreiro: 
+    - "Nudge" por Richard H. Thaler e Cass R. Sunstein
+    - "Viver com Risco" por Alison Schrager
+    - "Preparados para o Risco" por Gerd Gigerenzer
+    
+    Leitor: Os três mosqueteiros
+    Livreiro:
+    
+    Retorne com um json no seguinte formato:
+    
+    {
+     [
+       {"titulo": "titulo do livro", "autor": "nome dos autores separados por virgula", "imagem": "url para imagem da capa do livro", "descricao": "descricao do livro explicando porque foi recomendado"}
+     ]
+    }`
+  
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
+    console.log(favoriteBooks)
+
+    const recommendations = getMockedRecommendations(); 
+
     setRecommendedBooks(recommendations);
-  };
+  }
+
 
   // Função de exemplo para simular recomendações
-  const getRecommendations = (favoriteBooks) => {
+  const getMockedRecommendations = () => {
     const mockRecommendations = [
       'O Senhor dos Anéis',
       'Harry Potter',
@@ -34,7 +66,7 @@ export default function Home() {
             <h2 className="text-base font-semibold leading-7 text-indigo-600">Recomendação de livros</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Encontre seu próximo livro favorito</p>
             <br />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(runGenAi)}>
               <textarea
               id="message" 
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -59,7 +91,7 @@ export default function Home() {
                   </div>
                   {book}
                   </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-600">Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi. Odio urna massa nunc massa.</dd>
+                  <dd className="mt-2 text-base leading-7 text-gray-600"></dd>
                   </div>
                 </section>
               ))}
