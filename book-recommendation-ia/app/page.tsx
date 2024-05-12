@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler, FieldValues} from 'react-hook-form';
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Access your API key as an environment variable
-const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const genAI = new GoogleGenerativeAI(""); // # TODO API KEY
 
 type FormValues = {
   favoriteBooks: string
@@ -27,7 +26,7 @@ export default function Home() {
     Leitor: Os três mosqueteiros
     Livreiro:
     
-    Retorne com um json no seguinte formato:
+    A resposta deve ser apenas um json valido no seguinte formato:
     
     {
      [
@@ -122,8 +121,8 @@ export default function Home() {
                   <div className="relative pl-16">
                   <dt className="text-base font-semibold leading-7 text-gray-900">
                   <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                    <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                    <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 19V6.2C4 5.0799 4 4.51984 4.21799 4.09202C4.40973 3.71569 4.71569 3.40973 5.09202 3.21799C5.51984 3 6.0799 3 7.2 3H16.8C17.9201 3 18.4802 3 18.908 3.21799C19.2843 3.40973 19.5903 3.71569 19.782 4.09202C20 4.51984 20 5.0799 20 6.2V17H6C4.89543 17 4 17.8954 4 19ZM4 19C4 20.1046 4.89543 21 6 21H20M9 7H15M9 11H15M19 17V21" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </div>
                   {book.title}
