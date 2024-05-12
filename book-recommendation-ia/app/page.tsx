@@ -15,11 +15,8 @@ export default function Home() {
   const [recommendedBooks, setRecommendedBooks] = useState([] as { index: number, title: string, author: string, image: string, description: string }[]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => ( runGenAi(data.favoriteBooks) )
-
-  async function runGenAi(input: string) {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-  
-    const prompt = `Aja como um livreiro. Sugira livros do grupo Companhia das Letras que sejam similares aos livros que o leitor gosta.
+  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  const prompt = `Aja como um livreiro. Sugira livros do grupo Companhia das Letras que sejam similares aos livros que o leitor gosta.
 
     Leitor: Rápido e Devagar
     Livreiro: 
@@ -89,12 +86,14 @@ export default function Home() {
       ]
     })
 
+
+  async function runGenAi(input: string) {
     const result = await chat.sendMessage(input);
     const response = await result.response;
     const text = response.text();
     console.log(text);
 
-    setRecommendedBooks(JSON.parse(exampleResponse));
+    setRecommendedBooks(JSON.parse(text));
   }
 
   return (
