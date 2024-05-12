@@ -16,7 +16,7 @@ export default function Home() {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => ( runGenAi(data.favoriteBooks) )
   const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-  const prompt = `Aja como um livreiro. Sugira livros do grupo Companhia das Letras que sejam similares aos livros que o leitor gosta.
+  const prompt = `Aja como um livreiro. Sugira livros do que sejam similares aos livros que o leitor gosta.
 
     Leitor: Rápido e Devagar
     Livreiro: 
