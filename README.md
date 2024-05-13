@@ -1,13 +1,17 @@
 # book-recommendation-ia
 
+![Tela do site de recomendações](screenshot.png)
+
 Recomendação de Livros com Gemini API, Python Notebook e Next.js
 Este projeto combina a API do Gemini com Next.js e Tailwind para criar um sistema de recomendação de livros personalizado para cada usuário.
+
+Projeto feito para aprendizado, durante a Imersão IA da Alura e Google.
 
 ## Instalação
 Clone o repositório:
 
 ```
-git clone https://github.com/new
+git clone https://github.com/GuidoBR/book-recommendation-ia
 ```
 
 ### Instalar dependências:
